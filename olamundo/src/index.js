@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Ola from './components/ola';
+import Ola from './components/App';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root')
