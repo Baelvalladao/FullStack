@@ -4,13 +4,20 @@ import Rodape from './Rodape';
 import LojaSkin from './LojaSkin';
 import Loader from './Loader';
 
-const Loja = () => {
-    const [estado, setEstado] = useState({ carregando: true, dados: [] });
+export const CarteiraContext = createContext([0, () => {}, () => {}]);
 
+const Loja = () => {
+    const [estado, setEstado] = useState({ carregando: true, dados: [], carteira: 4000 });
+    const creditar = quantia => {
+        setEstado({...estado, carteira: estado.carteira + quantia})
+    }
+    const debitar = quantia => {
+        setEstado({...estado, carteira: estado.carteira - quantia})
+    }
     useEffect(() => {
         
             setTimeout(() => {
-                setEstado({ carregando: false, dados: objetos });
+                setEstado({...estado, carregando: false, dados: objetos });
             }, 2000);
         
     }, []);
@@ -22,16 +29,19 @@ const Loja = () => {
     } else {
         componentes = estado.dados.map(x => {
             return (
-                <LojaSkin key={x.id}
-                    nome={x.nome}
-                    imagem={x.imagem}
-                    gemas={x.gemas}
-                />
+                
+                    <LojaSkin key={x.id}
+                        nome={x.nome}
+                        imagem={x.imagem}
+                        gemas={x.gemas}
+                    />
+            
             );
         })
     }
 
     return (<>
+    <CarteiraContext.Provider value={[saldo: estado.carteira, creditar, debitar]}>
         <Cabecalho />
         <main>
             <div className="loja">
@@ -41,6 +51,7 @@ const Loja = () => {
             </div>
         </main>
         <Rodape />
+        </CarteiraContext.Provider>
     </>);
 };
 
